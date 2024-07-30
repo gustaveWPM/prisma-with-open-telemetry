@@ -1,7 +1,14 @@
+// @ts-check
+
+// eslint-disable-next-line import/no-extraneous-dependencies
 const WebpackBar = require('webpackbar');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const EslintWebpackPlugin = require('eslint-webpack-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const TerserPlugin = require('terser-webpack-plugin');
+
 const resolve = require('path').resolve;
 
 /** @type {import('webpack').Configuration} */
@@ -52,5 +59,6 @@ module.exports = {
     ignored: /node_modules/
   },
   entry: './src/main.ts',
-  mode: 'production'
+  mode: 'production',
+  target: 'node'
 };
