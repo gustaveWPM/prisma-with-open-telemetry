@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "private": true,
   "scripts": {
-    "make": "pnpm install && webpack",
+    "make": "pnpm install && pnpx prisma generate && webpack",
     "start": "node .",
     "prepare": "is-ci || husky"
   },
