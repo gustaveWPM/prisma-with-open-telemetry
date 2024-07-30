@@ -1,0 +1,44 @@
+services:
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:v7.0.7
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/dozzle/data:/data
+    ports:
+      - 49152:8080
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
+
+  db:
+    container_name: db
+    image: postgres:16.3
+    restart: always
+
+    environment:
+      POSTGRES_USER: ${APP_POSTGRES_USER}
+      PGUSER: ${APP_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${APP_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${APP_POSTGRES_DB}
+
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - app_pg_data:/var/lib/postgresql/data
+    networks:
+      - app_shared_network
+
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d ${APP_POSTGRES_DB} -U ${APP_POSTGRES_USER}']
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 7
+
+volumes:
+  app_pg_data:
+
+networks:
+  app_shared_network:
+    driver: bridge

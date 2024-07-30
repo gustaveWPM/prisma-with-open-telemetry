@@ -7,5 +7,5 @@ typecheck-dist
 *.tsbuildinfo
 
 !.env.example
-!.env.local.example
-!.env.test.example
+
+prisma/migrations/0_init

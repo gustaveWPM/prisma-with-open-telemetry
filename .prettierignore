@@ -3,3 +3,5 @@ node_modules
 
 dist
 .eslintcache
+
+docker/dozzle/data/admin/profile.json
