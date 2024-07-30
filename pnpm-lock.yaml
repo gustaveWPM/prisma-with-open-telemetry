@@ -62,6 +62,9 @@ importers:
       '@types/eslint':
         specifier: ^8.56.10
         version: 8.56.11
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.0.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.0.0-0
         version: 8.0.0-alpha.58(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
