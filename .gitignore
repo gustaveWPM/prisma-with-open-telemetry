@@ -1,0 +1,11 @@
+.env*
+node_modules
+dist
+typecheck-dist
+
+.eslintcache
+*.tsbuildinfo
+
+!.env.example
+!.env.local.example
+!.env.test.example

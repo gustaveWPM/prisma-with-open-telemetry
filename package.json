@@ -3,10 +3,51 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "is-ci || husky",
+    "start": "_"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT",
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/context-async-hooks": "^1.25.1",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.52.1",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.52.1",
+    "@opentelemetry/instrumentation": "^0.52.1",
+    "@opentelemetry/resources": "^1.25.1",
+    "@opentelemetry/sdk-trace-base": "^1.25.1",
+    "@opentelemetry/sdk-trace-node": "^1.25.1",
+    "@opentelemetry/semantic-conventions": "^1.25.1",
+    "@prisma/client": "^5.17.0",
+    "@prisma/instrumentation": "5.17.0",
+    "prisma": "^5.17.0",
+    "is-ci": "^3.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/cz-commitlint": "^19.2.0",
+    "@commitlint/types": "^19.0.3",
+    "@types/eslint": "^8.56.10",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "commitizen": "^4.3.0",
+    "editorconfig": "^2.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-only-error": "^1.0.2",
+    "eslint-plugin-perfectionist": "^2.11.0",
+    "eslint-plugin-promise": "^6.4.0",
+    "eslint-plugin-unused-imports": "^4.0.0",
+    "husky": "^9.0.11",
+    "inquirer": "^10.0.1",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.2",
+    "prisma": "5.17.0",
+    "rimraf": "^6.0.1",
+    "ts-prune": "0.10.3",
+    "typescript": "^5.5.3"
+  }
 }
