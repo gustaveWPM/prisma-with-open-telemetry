@@ -1,4 +1,4 @@
-.PHONY: all build initialize-db install initialize-env initialize
+.PHONY: all build initialize-db start install initialize-env initialize clean fclean re
 
 MAKEFLAGS += --silent
 
@@ -6,6 +6,9 @@ PM := pnpm
 
 ENV_EXAMPLE := .env.example
 ENV_FILE := .env
+
+DIST := ./dist/
+ESLINT_CACHE := .eslintcache
 
 INIT_MIGRATION_TMP_FILE := 0_init.tmp.23456789876543qsldklfjkhsqsjSQDFGHFDSQS
 
@@ -34,9 +37,14 @@ initialize-db:
 			echo 'create extension if not exists pgcrypto;' | cat - prisma/migrations/0_init/migration.sql > $(INIT_MIGRATION_TMP_FILE) && \
 			rm -f prisma/migrations/0_init/migration.sql && \
 			mv $(INIT_MIGRATION_TMP_FILE) prisma/migrations/0_init/migration.sql && \
-			pnpx prisma migrate deploy; \
+			pnpx prisma migrate deploy && \
+      pnpx prisma db seed; \
 		fi \
 	}
+
+# @Override
+start: initialize-db
+	$(PM) run start
 
 # @Mirror
 install:
@@ -47,3 +55,12 @@ initialize-env:
 
 initialize: install initialize-env
 	pnpx prisma generate
+
+clean:
+	$(PM) rimraf $(DIST)
+	$(PM) rimraf $(ESLINT_CACHE)
+
+fclean: clean
+	$(PM) rimraf node_modules
+
+re: fclean initialize build
