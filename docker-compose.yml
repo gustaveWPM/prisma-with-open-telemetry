@@ -4,10 +4,12 @@ services:
     image: jaegertracing/all-in-one:1.59
     restart: always
 
+    volumes:
+      - ./jaeger-config.yaml:/etc/jaeger/config.yaml
     environment:
       COLLECTOR_OTLP_ENABLED: 'true'
     ports:
-      - 16686:16686
+      - 127.0.0.1:16686:16686
       - 4318:4318
     networks:
       - app_shared_network
@@ -89,6 +91,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      jaeger:
+        condition: service_started
 
 volumes:
   app_pg_data:
