@@ -18,7 +18,6 @@ RUN apt-get install -y nodejs
 
 
 RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.1.20"
-RUN npm install -g pnpm
 
 
 WORKDIR /app
