@@ -37,13 +37,13 @@ initialize-db:
 			echo 'create extension if not exists pgcrypto;' | cat - prisma/migrations/0_init/migration.sql > $(INIT_MIGRATION_TMP_FILE) && \
 			rm -f prisma/migrations/0_init/migration.sql && \
 			mv $(INIT_MIGRATION_TMP_FILE) prisma/migrations/0_init/migration.sql && \
-			pnpx prisma migrate deploy; \
+			pnpx prisma migrate deploy && \
+      pnpx prisma db seed; \
 		fi \
 	}
 
 # @Override
 start: initialize-db
-	pnpx prisma db seed
 	$(PM) run start
 
 # @Mirror
