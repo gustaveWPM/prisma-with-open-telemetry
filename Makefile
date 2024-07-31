@@ -2,7 +2,7 @@
 
 MAKEFLAGS += --silent
 
-PM := pnpm
+PM := bun
 
 ENV_EXAMPLE := .env.example
 ENV_FILE := .env
@@ -30,15 +30,15 @@ initialize-db:
 		if [ -e "prisma/migrations/0_init/migration.sql" ]; then \
 			: ; \
 		else \
-			pnpx prisma migrate diff \
+			bunx prisma migrate diff \
 				--from-empty \
 				--to-schema-datamodel prisma/schema.prisma \
 				--script > prisma/migrations/0_init/migration.sql 2>/dev/null && \
 			echo 'create extension if not exists pgcrypto;' | cat - prisma/migrations/0_init/migration.sql > $(INIT_MIGRATION_TMP_FILE) && \
 			rm -f prisma/migrations/0_init/migration.sql && \
 			mv $(INIT_MIGRATION_TMP_FILE) prisma/migrations/0_init/migration.sql && \
-			pnpx prisma migrate deploy && \
-      pnpx prisma db seed; \
+			bunx prisma migrate deploy && \
+      bunx prisma db seed; \
 		fi \
 	}
 
@@ -54,7 +54,7 @@ initialize-env:
 	[ -e "$(ENV_FILE)" ] || cp "$(ENV_EXAMPLE)" "$(ENV_FILE)"
 
 initialize: install initialize-env
-	pnpx prisma generate
+	bunx prisma generate
 
 clean:
 	$(PM) rimraf $(DIST)

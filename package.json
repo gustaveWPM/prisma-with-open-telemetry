@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "initialize": "make initialize",
-    "build": "webpack",
-    "start": "node .",
+    "build": "bun build ./src/main.ts --outdir ./dist --minify-whitespace --minify-syntax --target bun",
+    "start": "bun .",
     "prepare": "is-ci || husky"
   },
   "prisma": {
@@ -29,8 +29,7 @@
     "@prisma/client": "^5.17.0",
     "@prisma/instrumentation": "5.17.0",
     "is-ci": "^3.0.1",
-    "prisma": "^5.17.0",
-    "webpack": "^5.93.0"
+    "prisma": "^5.17.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.2.2",
@@ -38,7 +37,6 @@
     "@commitlint/types": "^19.0.3",
     "@types/eslint": "^8.56.10",
     "@types/node": "^22.0.0",
-    "@types/webpackbar": "^4.0.6",
     "@typescript-eslint/eslint-plugin": "^8.0.0-0",
     "@typescript-eslint/parser": "^7.18.0",
     "commitizen": "^4.3.0",
@@ -49,20 +47,13 @@
     "eslint-plugin-perfectionist": "^2.11.0",
     "eslint-plugin-promise": "^6.4.0",
     "eslint-plugin-unused-imports": "^4.0.0",
-    "eslint-webpack-plugin": "^4.0.1",
-    "fork-ts-checker-webpack-plugin": "^9.0.2",
     "husky": "^9.0.11",
     "inquirer": "^9.0.0",
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "prisma": "5.17.0",
     "rimraf": "^6.0.1",
-    "swc": "^1.0.11",
-    "swc-loader": "^0.2.3",
-    "terser-webpack-plugin": "^5.3.9",
     "ts-prune": "0.10.3",
-    "typescript": "^5.5.3",
-    "webpack-cli": "^5.1.4",
-    "webpackbar": "^5.0.2"
+    "typescript": "^5.5.3"
   }
 }
