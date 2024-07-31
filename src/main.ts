@@ -1,5 +1,5 @@
-import prisma, { prismaTelemetry } from '@/db/prisma';
 import { setTimeout } from 'timers/promises';
+import prisma from '@/db/prisma';
 
 function randint(min: number, max: number) {
   if (min > max) [min, max] = [max, min];
@@ -10,13 +10,10 @@ function randint(min: number, max: number) {
 
 async function main() {
   while (true) {
-    const span = prismaTelemetry.startSpan('fetch_users');
     try {
       await prisma.user.findMany({ where: { foo: 'bar' } });
     } catch (error) {
-      console.error('Error fetching users:', error);
-    } finally {
-      span.end();
+      console.error(error);
     }
     await setTimeout(randint(1, 10) * 1e3);
   }
