@@ -1,4 +1,66 @@
 services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    restart: no
+
+    environment:
+      APP_DATABASE_URL: ${APP_DATABASE_URL}
+
+    networks:
+      - app_shared_network
+
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /bot-app/src
+          ignore:
+            - .env
+            - .env.test
+
+        - action: rebuild
+          path: ./prisma/schema.prisma
+
+        - action: rebuild
+          path: ./prisma/seed.ts
+
+        - action: rebuild
+          path: ./docker-compose.yml
+
+        - action: rebuild
+          path: ./Makefile
+
+        - action: rebuild
+          path: ./package.json
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.59
+    restart: always
+    environment:
+      COLLECTOR_OTLP_ENABLED: 'true'
+      COLLECTOR_ZIPKIN_HOST_PORT: ':9411'
+    ports:
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 4317:4317
+      - 4318:4318
+      - 14250:14250
+      - 14268:14268
+      - 14269:14269
+      - 9411:9411
+    networks:
+      - app_shared_network
+
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:v7.0.7
@@ -26,8 +88,6 @@ services:
       - '127.0.0.1:5432:5432'
     volumes:
       - app_pg_data:/var/lib/postgresql/data
-    networks:
-      - app_shared_network
 
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -d ${APP_POSTGRES_DB} -U ${APP_POSTGRES_USER}']
@@ -35,6 +95,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 7
+
+    networks:
+      - app_shared_network
 
 volumes:
   app_pg_data:

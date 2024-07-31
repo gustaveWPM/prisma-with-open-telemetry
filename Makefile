@@ -1,4 +1,4 @@
-.PHONY: all build initialize-db start install initialize-env initialize clean fclean re
+.PHONY: all build initialize-db start install initialize-env initialize clean fclean re docker-app-entrypoint
 
 MAKEFLAGS += --silent
 
@@ -37,13 +37,13 @@ initialize-db:
 			echo 'create extension if not exists pgcrypto;' | cat - prisma/migrations/0_init/migration.sql > $(INIT_MIGRATION_TMP_FILE) && \
 			rm -f prisma/migrations/0_init/migration.sql && \
 			mv $(INIT_MIGRATION_TMP_FILE) prisma/migrations/0_init/migration.sql && \
-			pnpx prisma migrate deploy && \
-      pnpx prisma db seed; \
+			pnpx prisma migrate deploy; \
 		fi \
 	}
 
 # @Override
 start: initialize-db
+	pnpx prisma db seed
 	$(PM) run start
 
 # @Mirror
@@ -64,3 +64,5 @@ fclean: clean
 	$(PM) rimraf node_modules
 
 re: fclean initialize build
+
+docker-app-entrypoint: initialize build start
