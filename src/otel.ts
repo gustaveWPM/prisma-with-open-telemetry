@@ -1,9 +1,8 @@
 import type { AutoLoaderOptions } from '@opentelemetry/instrumentation';
 import type { Tracer } from '@opentelemetry/api';
 
-import { TraceIdRatioBasedSampler, SimpleSpanProcessor, BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { TraceIdRatioBasedSampler, SimpleSpanProcessor, ConsoleSpanExporter, BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { SEMRESATTRS_SERVICE_VERSION, SEMRESATTRS_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
 import { Resource } from '@opentelemetry/resources';
@@ -19,7 +18,7 @@ function initializeTracing({
   serviceName: string;
 }): Tracer {
   const isProd = process.env.NODE_ENV?.startsWith('prod') ?? true;
-  const traceRatio = isProd ? 0.1 : 1.0;
+  const traceRatio = isProd ? /*0.1*/ 1.0 : 1.0;
 
   const tracerProvider = new NodeTracerProvider({
     resource: new Resource({
@@ -30,7 +29,11 @@ function initializeTracing({
     sampler: new TraceIdRatioBasedSampler(traceRatio)
   });
 
-  const exporter = new OTLPTraceExporter();
+  // const exporter = new OTLPTraceExporter({
+  //   url: 'http://jaeger:4318/v1/traces' // ???
+  // });
+
+  const exporter = new ConsoleSpanExporter();
 
   if (isProd) {
     tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter));
