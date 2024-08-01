@@ -1,11 +1,10 @@
 services:
   jaeger:
     container_name: jaeger
+    # NOTE: https://github.com/orgs/jaegertracing/discussions/5761#discussioncomment-10203350
     image: jaegertracing/all-in-one:1.58
     restart: always
 
-    volumes:
-      - ./jaeger-config.yaml:/etc/jaeger/config.yaml
     environment:
       COLLECTOR_OTLP_ENABLED: 'true'
     ports:
